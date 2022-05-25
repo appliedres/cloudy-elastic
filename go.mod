@@ -2,11 +2,11 @@ module github.com/appliedres/cloudy-elastic
 
 go 1.18
 
-replace github.com/appliedres/cloudy => ../cloudy
+// replace github.com/appliedres/cloudy => ../cloudy
 
 require (
 	github.com/Jeffail/gabs/v2 v2.6.1
-	github.com/appliedres/cloudy v0.0.0-00010101000000-000000000000
+	github.com/appliedres/cloudy v0.0.1
 	github.com/cenkalti/backoff/v4 v4.1.3
 	github.com/elastic/go-elasticsearch/v7 v7.17.1
 )
