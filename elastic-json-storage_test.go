@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/appliedres/cloudy"
-	"github.com/appliedres/cloudy/tests"
+	"github.com/appliedres/cloudy/datastore"
 )
 
 // docker run -d --name elasticsearch  -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:7.14.2
@@ -21,7 +21,7 @@ var info = &ConnectionInfo{
 
 func startDocker() error {
 	fmt.Println("Starting Elasticsearch instance in docker for testing")
-	cmd := exec.Command("docker", "run", "--rm", "--name", "cloudy-test-elasticsearch", "-e", "discovery.type=single-node", "-d", "-p", "9201:9200", "elasticsearch:7.14.2")
+	cmd := exec.Command("podman", "run", "--rm", "--name", "cloudy-test-elasticsearch", "-e", "discovery.type=single-node", "-d", "-p", "9201:9200", "elasticsearch:7.14.2")
 	var out bytes.Buffer
 	var errs bytes.Buffer
 
@@ -30,7 +30,7 @@ func startDocker() error {
 	err := cmd.Run()
 	if err != nil {
 		errstr := errs.String()
-		if strings.HasPrefix(errstr, "docker: Error response from daemon: Conflict. The container name \"/cloudy-test-elasticsearch\" is already in use by container") {
+		if strings.Contains(errstr, "already in use") {
 			fmt.Println("Already running")
 		} else {
 			fmt.Println(out.String())
@@ -86,23 +86,23 @@ func TestMain(m *testing.M) {
 func TestJsonDataStore(t *testing.T) {
 	ctx := cloudy.StartContext()
 
-	ds := NewElasticJsonDataStore[tests.TestItem](
+	ds := NewElasticJsonDataStore[datastore.TestItem](
 		"test",
 	)
 
 	ds.Open(ctx, info)
 
-	tests.JsonDataStoreTest(t, ctx, ds)
+	datastore.JsonDataStoreTest(t, ctx, ds)
 }
 
 func TestJsonDataStoreQuery(t *testing.T) {
 	ctx := cloudy.StartContext()
 
-	ds := NewElasticJsonDataStore[tests.TestQueryItem](
+	ds := NewElasticJsonDataStore[datastore.TestQueryItem](
 		"testquery",
 	)
 
 	ds.Open(ctx, info)
 
-	tests.QueryJsonDataStoreTest(t, ctx, ds)
+	datastore.QueryJsonDataStoreTest(t, ctx, ds)
 }
