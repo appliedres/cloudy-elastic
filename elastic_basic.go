@@ -1,4 +1,4 @@
-package elastic
+package cloudyelastic
 
 import (
 	"context"
@@ -17,14 +17,14 @@ import (
 	// "github.com/elastic/go-elasticsearch/v7/esutil"
 )
 
-//ConnectionInfo connection information
+// ConnectionInfo connection information
 type ConnectionInfo struct {
 	Endpoint string `json:"endpoint"`
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
-//NewClient creates a new Client
+// NewClient creates a new Client
 func NewClient(info *ConnectionInfo) (*elasticsearch.Client, error) {
 	retryBackoff := backoff.NewExponentialBackOff()
 	es, err := elasticsearch.NewClient(elasticsearch.Config{
@@ -56,7 +56,7 @@ func NewClient(info *ConnectionInfo) (*elasticsearch.Client, error) {
 	return es, nil
 }
 
-//Index an item in the elastic search
+// Index an item in the elastic search
 func Index(client *elasticsearch.Client, item interface{}, ID string, indexName string) error {
 
 	// Build the request body.
@@ -97,7 +97,7 @@ func CreateIndex(client *elasticsearch.Client, indexName string) error {
 	return nil
 }
 
-//Index an item in the elastic search
+// Index an item in the elastic search
 func IndexData(client *elasticsearch.Client, data []byte, ID string, indexName string) error {
 	// Set up the request object.
 	req := esapi.IndexRequest{
@@ -149,7 +149,7 @@ func RemoveData(client *elasticsearch.Client, ID string, indexName string) error
 	return nil
 }
 
-//ElasticLoadByID Loads an item from Elastic Search
+// ElasticLoadByID Loads an item from Elastic Search
 func LoadByID(client *elasticsearch.Client, ID string, index string) ([]byte, error) {
 	query := fmt.Sprintf(`{
 		"query": {
@@ -173,7 +173,7 @@ func LoadByID(client *elasticsearch.Client, ID string, index string) ([]byte, er
 	return value, err
 }
 
-//ElaticSearch basic elasic search
+// ElaticSearch basic elasic search
 func Query(es *elasticsearch.Client, index string, query string) (string, error) {
 
 	// Issue the search
@@ -229,7 +229,7 @@ func Hits(results string) int {
 	return -1
 }
 
-//GetIDsFromResults Gets a list of IDs from the elasic search results
+// GetIDsFromResults Gets a list of IDs from the elasic search results
 func IDsFromResults(results string) []string {
 	var rtn []string
 	jsonParsed, err := gabs.ParseJSON([]byte(results))
@@ -260,7 +260,7 @@ func ValueFromResults(results string, name string) []string {
 	return rtn
 }
 
-//GenerateIDQuery generates a query for all the ids
+// GenerateIDQuery generates a query for all the ids
 func GenerateIDQuery(ids []string) string {
 	es := NewQuery()
 	es.Size = 1000
@@ -283,12 +283,12 @@ func ToError(results string) error {
 	return nil
 }
 
-//IsError determines if the results are an error
+// IsError determines if the results are an error
 func IsError(results string) bool {
 	return false
 }
 
-//ParseResults loads all the results as objects
+// ParseResults loads all the results as objects
 func ParseResults(results string) ([][]byte, error) {
 	var rtn [][]byte
 
