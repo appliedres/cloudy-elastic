@@ -24,6 +24,15 @@ type ConnectionInfo struct {
 	Password string `json:"password"`
 }
 
+func NewClientFromEnv(env cloudy.Environment) (*elasticsearch.Client, error) {
+	host := env.Force("ES_HOST")
+	user := env.Force("ES_USER")
+	pass := env.Force("ES_PASS")
+
+	// Connect to elastic search
+	return NewClient(&ConnectionInfo{Endpoint: host, Username: user, Password: pass})
+}
+
 // NewClient creates a new Client
 func NewClient(info *ConnectionInfo) (*elasticsearch.Client, error) {
 	retryBackoff := backoff.NewExponentialBackOff()
