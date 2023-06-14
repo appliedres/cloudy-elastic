@@ -2,11 +2,9 @@ module github.com/appliedres/cloudy-elastic
 
 go 1.19
 
-replace github.com/appliedres/cloudy => ../cloudy
-
 require (
 	github.com/Jeffail/gabs/v2 v2.7.0
-	github.com/appliedres/cloudy v0.0.11
+	github.com/appliedres/cloudy v0.0.12
 	github.com/cenkalti/backoff/v4 v4.1.3
 	github.com/elastic/go-elasticsearch/v7 v7.17.1
 )
