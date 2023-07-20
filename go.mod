@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/Jeffail/gabs/v2 v2.7.0
-	github.com/appliedres/cloudy v0.0.20
+	github.com/appliedres/cloudy v0.0.21
 	github.com/cenkalti/backoff/v4 v4.1.3
 	github.com/elastic/go-elasticsearch/v7 v7.17.1
 )
